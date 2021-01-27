@@ -101,6 +101,48 @@
   }
 }
 
+:local(.script-container) {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 1em;
+  width: 100%;
+  
+  button {
+    margin: 0 1em;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
+  :local(.script-list) {
+    color: var(--panel-subtext-color);
+    font-weight: normal;
+    font-size: 0.9em;
+    list-style: none;
+    margin-top: 0;
+    padding: 0;
+    
+    button {
+      color: var(--action-color, #FF3464);
+    }
+    li {
+      margin-bottom: 0.5em;
+    }
+  }
+  :local(.script-entry) {
+    display: flex;
+    align-items: center;
+    input {
+      width: 100%;
+      margin: 0;
+    }
+    button {
+      font-weight: bold;
+    }
+  }
+}
+
 :local(.permission-disabled) {
   color: var(--panel-widget-disabled-color);
 }

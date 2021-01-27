@@ -9,6 +9,9 @@ import styles from "../assets/stylesheets/room-settings-dialog.scss";
 import DialogContainer from "./dialog-container";
 import configs from "../utils/configs";
 
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 export default class RoomSettingsDialog extends Component {
   static propTypes = {
     initialSettings: PropTypes.object,
@@ -245,6 +248,33 @@ export default class RoomSettingsDialog extends Component {
             {this.renderCheckbox("spawn_emoji")}
             <div />
             {this.renderCheckbox("fly")}
+          </div>
+          <span className={styles.subtitle}>Room Scripts</span>
+          <div className={styles.scriptContainer}>
+            <ul className={styles.scriptList}>
+              {this.state.custom_scripts.map((url, i) => (
+                <li key={i}>
+                  <button aria-label="Delete custom script entry">
+                    <i>
+                      <FontAwesomeIcon icon={faTimes} />
+                    </i>
+                  </button>
+                  <span>{url}</span>
+                </li>
+              ))}
+            </ul>
+            <div className={styles.scriptEntry}>
+              <input
+                name="url"
+                type="text"
+                autoComplete="off"
+                placeholder="Script URL"
+                onFocus={e => handleTextFieldFocus(e.target)}
+                onBlur={() => handleTextFieldBlur()}
+                className={styles.nameField}
+              />
+              <button aria-label="Add custom script entry">add</button>
+            </div>
           </div>
           <button type="submit" className={styles.nextButton}>
             <FormattedMessage id="room-settings.apply" />
