@@ -251,7 +251,7 @@ export default class RoomSettingsDialog extends Component {
             {this.renderCheckbox("fly")}
           </div>
           <span className={styles.subtitle}>Custom Scripts</span>
-          <CustomScripts store={this.props.store} />
+          <CustomScripts initialScripts={this.state.scripts} onChange={scripts => this.setState({ scripts })} />
           <button type="submit" className={styles.nextButton}>
             <FormattedMessage id="room-settings.apply" />
           </button>
@@ -263,21 +263,20 @@ export default class RoomSettingsDialog extends Component {
 
 class CustomScripts extends Component {
   static propTypes = {
-    store: PropTypes.object
+    initialScripts: PropTypes.arrayOf(PropTypes.string),
+    onChange: PropTypes.func
   };
 
   constructor(props) {
     super(props);
-    const savedScripts = props.store.state.preferences.scripts;
     // Scripts is an array of URL strings
-    this.state = { scripts: savedScripts ?? [] };
+    this.state = { scripts: props.initialScripts ?? [] };
   }
 
   setScripts(scripts) {
     // Update list of scripts in component state and in the application store
-    const overwriteMerge = (destinationArray, sourceArray) => sourceArray;
-    this.props.store.update({ preferences: { scripts } }, { arrayMerge: overwriteMerge });
     this.setState({ scripts });
+    this.props.onChange(scripts);
   }
 
   onClickAdd(event) {

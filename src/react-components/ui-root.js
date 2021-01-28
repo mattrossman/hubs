@@ -1732,11 +1732,14 @@ class UIRoot extends Component {
                     member_permissions: this.props.hub.member_permissions,
                     room_size: this.props.hub.room_size,
                     allow_promotion: this.props.hub.allow_promotion,
-                    entry_mode: this.props.hub.entry_mode
+                    entry_mode: this.props.hub.entry_mode,
+                    scripts: this.props.hub.scripts
                   },
-                  onChange: settings => this.props.hubChannel.updateHub(settings),
-                  hubChannel: this.props.hubChannel,
-                  store: this.props.store
+                  onChange: settings => {
+                    this.props.hubChannel.updateHub(settings);
+                    console.log("new settings", settings);
+                  },
+                  hubChannel: this.props.hubChannel
                 })
               }
             />
