@@ -250,37 +250,68 @@ export default class RoomSettingsDialog extends Component {
             {this.renderCheckbox("fly")}
           </div>
           <span className={styles.subtitle}>Room Scripts</span>
-          <div className={styles.scriptContainer}>
-            <ul className={styles.scriptList}>
-              {this.state.custom_scripts.map((url, i) => (
-                <li key={i}>
-                  <button aria-label="Delete custom script entry">
-                    <i>
-                      <FontAwesomeIcon icon={faTimes} />
-                    </i>
-                  </button>
-                  <span>{url}</span>
-                </li>
-              ))}
-            </ul>
-            <div className={styles.scriptEntry}>
-              <input
-                name="url"
-                type="text"
-                autoComplete="off"
-                placeholder="Script URL"
-                onFocus={e => handleTextFieldFocus(e.target)}
-                onBlur={() => handleTextFieldBlur()}
-                className={styles.nameField}
-              />
-              <button aria-label="Add custom script entry">add</button>
-            </div>
-          </div>
+          <RoomScripts />
           <button type="submit" className={styles.nextButton}>
             <FormattedMessage id="room-settings.apply" />
           </button>
         </form>
       </DialogContainer>
+    );
+  }
+}
+
+class RoomScripts extends Component {
+  constructor() {
+    super();
+    // Scripts is an array of URL strings
+    this.state = { scripts: [] };
+  }
+
+  onClickAdd(event) {
+    event.preventDefault();
+    const url = this.input.value;
+    this.input.value = "";
+    this.setState({ scripts: [...this.state.scripts, url] });
+  }
+
+  onClickRemove(event, i) {
+    event.preventDefault();
+    const scripts = [...this.state.scripts];
+    scripts.splice(i, 1);
+    this.setState({ scripts });
+  }
+
+  render() {
+    return (
+      <div className={styles.scriptContainer}>
+        <ul className={styles.scriptList}>
+          {this.state.scripts.map((url, i) => (
+            <li key={i}>
+              <button aria-label="Delete custom script entry" onClick={e => this.onClickRemove(e, i)}>
+                <i>
+                  <FontAwesomeIcon icon={faTimes} />
+                </i>
+              </button>
+              <span>{url}</span>
+            </li>
+          ))}
+        </ul>
+        <div className={styles.scriptEntry}>
+          <input
+            name="url"
+            type="text"
+            autoComplete="off"
+            placeholder="Script URL"
+            onFocus={e => handleTextFieldFocus(e.target)}
+            onBlur={() => handleTextFieldBlur()}
+            className={styles.nameField}
+            ref={node => (this.input = node)}
+          />
+          <button aria-label="Add custom script entry" onClick={e => this.onClickAdd(e)}>
+            add
+          </button>
+        </div>
+      </div>
     );
   }
 }

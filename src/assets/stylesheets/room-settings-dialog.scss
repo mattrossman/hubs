@@ -113,6 +113,7 @@
     padding: 0;
     background: none;
     border: none;
+    cursor: pointer;
   }
 
   :local(.script-list) {
@@ -122,6 +123,12 @@
     list-style: none;
     margin-top: 0;
     padding: 0;
+
+    // Reverse %unselectable
+    -moz-user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
     
     button {
       color: var(--action-color, #FF3464);
