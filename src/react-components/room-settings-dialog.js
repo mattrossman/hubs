@@ -263,8 +263,13 @@ export default class RoomSettingsDialog extends Component {
 class RoomScripts extends Component {
   constructor() {
     super();
+    const savedScripts = JSON.parse(localStorage.getItem("AEL_ROOM_SCRIPTS"));
     // Scripts is an array of URL strings
-    this.state = { scripts: [] };
+    this.state = { scripts: savedScripts ?? [] };
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem("AEL_ROOM_SCRIPTS", JSON.stringify(this.state.scripts));
   }
 
   onClickAdd(event) {
