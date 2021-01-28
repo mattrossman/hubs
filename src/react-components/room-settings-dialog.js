@@ -250,8 +250,8 @@ export default class RoomSettingsDialog extends Component {
             <div />
             {this.renderCheckbox("fly")}
           </div>
-          <span className={styles.subtitle}>Room Scripts</span>
-          <RoomScripts store={this.props.store} />
+          <span className={styles.subtitle}>Custom Scripts</span>
+          <CustomScripts store={this.props.store} />
           <button type="submit" className={styles.nextButton}>
             <FormattedMessage id="room-settings.apply" />
           </button>
@@ -261,7 +261,7 @@ export default class RoomSettingsDialog extends Component {
   }
 }
 
-class RoomScripts extends Component {
+class CustomScripts extends Component {
   static propTypes = {
     store: PropTypes.object
   };
@@ -299,7 +299,10 @@ class RoomScripts extends Component {
   render() {
     return (
       <div className={styles.scriptContainer}>
-        <div className={styles.scriptEntry} style={{ marginBottom: this.state.scripts.length > 0 ? "1em" : 0 }}>
+        <div
+          className={styles.scriptInputContainer}
+          style={{ marginBottom: this.state.scripts.length > 0 ? "1em" : 0 }}
+        >
           <input
             name="url"
             type="text"
