@@ -121,7 +121,7 @@
     font-weight: normal;
     font-size: 0.9em;
     list-style: none;
-    margin-top: 0;
+    margin: 0;
     padding: 0;
 
     // Reverse %unselectable
@@ -135,6 +135,9 @@
     }
     li {
       margin-bottom: 0.5em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
   :local(.script-entry) {

@@ -270,12 +270,13 @@ class RoomScripts extends Component {
   onClickAdd(event) {
     event.preventDefault();
     const url = this.input.value;
-    this.input.value = "";
-    this.setState({ scripts: [...this.state.scripts, url] });
+    if (url.length > 0) {
+      this.input.value = "";
+      this.setState({ scripts: [...this.state.scripts, url] });
+    }
   }
 
-  onClickRemove(event, i) {
-    event.preventDefault();
+  onClickRemove(i) {
     const scripts = [...this.state.scripts];
     scripts.splice(i, 1);
     this.setState({ scripts });
@@ -284,19 +285,7 @@ class RoomScripts extends Component {
   render() {
     return (
       <div className={styles.scriptContainer}>
-        <ul className={styles.scriptList}>
-          {this.state.scripts.map((url, i) => (
-            <li key={i}>
-              <button aria-label="Delete custom script entry" onClick={e => this.onClickRemove(e, i)}>
-                <i>
-                  <FontAwesomeIcon icon={faTimes} />
-                </i>
-              </button>
-              <span>{url}</span>
-            </li>
-          ))}
-        </ul>
-        <div className={styles.scriptEntry}>
+        <div className={styles.scriptEntry} style={{ marginBottom: this.state.scripts.length > 0 ? "1em" : 0 }}>
           <input
             name="url"
             type="text"
@@ -311,6 +300,18 @@ class RoomScripts extends Component {
             add
           </button>
         </div>
+        <ul className={styles.scriptList}>
+          {this.state.scripts.map((url, i) => (
+            <li key={i}>
+              <button type="button" aria-label="Delete custom script entry" onClick={e => this.onClickRemove(i)}>
+                <i>
+                  <FontAwesomeIcon icon={faTimes} />
+                </i>
+              </button>
+              <span>{url}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
