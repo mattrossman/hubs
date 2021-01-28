@@ -1735,7 +1735,8 @@ class UIRoot extends Component {
                     entry_mode: this.props.hub.entry_mode
                   },
                   onChange: settings => this.props.hubChannel.updateHub(settings),
-                  hubChannel: this.props.hubChannel
+                  hubChannel: this.props.hubChannel,
+                  store: this.props.store
                 })
               }
             />

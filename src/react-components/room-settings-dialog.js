@@ -18,7 +18,8 @@ export default class RoomSettingsDialog extends Component {
     onChange: PropTypes.func,
     hubChannel: PropTypes.object,
     onClose: PropTypes.func,
-    showPublicRoomSetting: PropTypes.bool
+    showPublicRoomSetting: PropTypes.bool,
+    store: PropTypes.object
   };
 
   constructor(props) {
@@ -250,7 +251,7 @@ export default class RoomSettingsDialog extends Component {
             {this.renderCheckbox("fly")}
           </div>
           <span className={styles.subtitle}>Room Scripts</span>
-          <RoomScripts />
+          <RoomScripts store={this.props.store} />
           <button type="submit" className={styles.nextButton}>
             <FormattedMessage id="room-settings.apply" />
           </button>
@@ -261,15 +262,22 @@ export default class RoomSettingsDialog extends Component {
 }
 
 class RoomScripts extends Component {
-  constructor() {
-    super();
-    const savedScripts = JSON.parse(localStorage.getItem("AEL_ROOM_SCRIPTS"));
+  static propTypes = {
+    store: PropTypes.object
+  };
+
+  constructor(props) {
+    super(props);
+    const savedScripts = props.store.state.preferences.scripts;
     // Scripts is an array of URL strings
     this.state = { scripts: savedScripts ?? [] };
   }
 
-  componentDidUpdate() {
-    localStorage.setItem("AEL_ROOM_SCRIPTS", JSON.stringify(this.state.scripts));
+  setScripts(scripts) {
+    // Update list of scripts in component state and in the application store
+    const overwriteMerge = (destinationArray, sourceArray) => sourceArray;
+    this.props.store.update({ preferences: { scripts } }, { arrayMerge: overwriteMerge });
+    this.setState({ scripts });
   }
 
   onClickAdd(event) {
@@ -277,14 +285,15 @@ class RoomScripts extends Component {
     const url = this.input.value;
     if (url.length > 0) {
       this.input.value = "";
-      this.setState({ scripts: [...this.state.scripts, url] });
+      const scripts = [...this.state.scripts, url];
+      this.setScripts(scripts);
     }
   }
 
   onClickRemove(i) {
     const scripts = [...this.state.scripts];
     scripts.splice(i, 1);
-    this.setState({ scripts });
+    this.setScripts(scripts);
   }
 
   render() {
