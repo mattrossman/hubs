@@ -641,12 +641,15 @@ function handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data)
         entryManager.exitScene();
       }
 
-      const scripts = ["https://hubs-script-cdn.glitch.me/hello.js"];
-      console.log("injecting scripts", scripts);
-
-      // "webpackIgnore" is needed so it knows these are external files
-      await Promise.all(scripts.map(url => import(/* webpackIgnore: true */ url)));
-      console.log("finished injecting, starting networked-scene connection");
+      for (let script of hub.user_data.scripts) {
+        try {
+          // "webpackIgnore" is needed so it knows these are external files
+          await import(/* webpackIgnore: true */ script);
+          console.log("Injected script", script);
+        } catch (error) {
+          console.error(`Problem loading custom script ${script}\nReason: ${error}`);
+        }
+      }
 
       const connectionErrorTimeout = setTimeout(onConnectionError, 90000);
       scene.components["networked-scene"]
