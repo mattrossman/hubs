@@ -251,7 +251,10 @@ export default class RoomSettingsDialog extends Component {
             {this.renderCheckbox("fly")}
           </div>
           <span className={styles.subtitle}>Custom Scripts</span>
-          <CustomScripts initialScripts={this.state.scripts} onChange={scripts => this.setState({ scripts })} />
+          <CustomScripts
+            initialScripts={this.state.user_data?.scripts ?? []}
+            onChange={scripts => this.setState({ user_data: { scripts } })}
+          />
           <button type="submit" className={styles.nextButton}>
             <FormattedMessage id="room-settings.apply" />
           </button>
@@ -270,11 +273,10 @@ class CustomScripts extends Component {
   constructor(props) {
     super(props);
     // Scripts is an array of URL strings
-    this.state = { scripts: props.initialScripts ?? [] };
+    this.state = { scripts: props.initialScripts };
   }
 
   setScripts(scripts) {
-    // Update list of scripts in component state and in the application store
     this.setState({ scripts });
     this.props.onChange(scripts);
   }

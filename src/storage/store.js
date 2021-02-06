@@ -95,11 +95,7 @@ export const SCHEMA = {
         disableEchoCancellation: { type: "bool" },
         disableNoiseSuppression: { type: "bool" },
         disableAutoGainControl: { type: "bool" },
-        locale: { type: "string" },
-        scripts: {
-          type: "array",
-          items: { type: "string" }
-        }
+        locale: { type: "string" }
       }
     },
 
