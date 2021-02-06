@@ -633,14 +633,20 @@ function handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data)
       adapter.reliableTransport = sendViaPhoenix(true);
       adapter.unreliableTransport = sendViaPhoenix(false);
     });
-
-    const loadEnvironmentAndConnect = () => {
+    const loadEnvironmentAndConnect = async () => {
       updateEnvironmentForHub(hub, entryManager);
       function onConnectionError() {
         console.error("Unknown error occurred while attempting to connect to networked scene.");
         remountUI({ roomUnavailableReason: "connect_error" });
         entryManager.exitScene();
       }
+
+      const scripts = ["https://hubs-script-cdn.glitch.me/hello.js"];
+      console.log("injecting scripts", scripts);
+
+      // "webpackIgnore" is needed so it knows these are external files
+      await Promise.all(scripts.map(url => import(/* webpackIgnore: true */ url)));
+      console.log("finished injecting, starting networked-scene connection");
 
       const connectionErrorTimeout = setTimeout(onConnectionError, 90000);
       scene.components["networked-scene"]
