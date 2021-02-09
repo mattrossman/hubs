@@ -641,7 +641,8 @@ function handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data)
         entryManager.exitScene();
       }
 
-      for (let script of hub.user_data.scripts) {
+      const scripts = hub.user_data?.scripts ?? [];
+      for (let script of scripts) {
         try {
           // "webpackIgnore" is needed so it knows these are external files
           await import(/* webpackIgnore: true */ script);

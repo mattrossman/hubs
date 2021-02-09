@@ -18,8 +18,7 @@ export default class RoomSettingsDialog extends Component {
     onChange: PropTypes.func,
     hubChannel: PropTypes.object,
     onClose: PropTypes.func,
-    showPublicRoomSetting: PropTypes.bool,
-    store: PropTypes.object
+    showPublicRoomSetting: PropTypes.bool
   };
 
   constructor(props) {
