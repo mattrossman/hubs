@@ -6,6 +6,10 @@ if (configs.CORS_PROXY_SERVER) {
   nonCorsProxyDomains.push(configs.CORS_PROXY_SERVER);
 }
 nonCorsProxyDomains.push(document.location.hostname);
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+  nonCorsProxyDomains.push("gt-ael-aq-assets.aelatgt-internal.net");
+  nonCorsProxyDomains.push("hubs.aelatgt.net");
+}
 
 const commonKnownContentTypes = {
   gltf: "model/gltf",
