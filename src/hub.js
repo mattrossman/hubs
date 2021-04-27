@@ -1255,6 +1255,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     resolve: null
   };
 
+  let scriptPromise = null;
+
   hubChannel.setPhoenixChannel(hubPhxChannel);
 
   hubPhxChannel
@@ -1271,6 +1273,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (isInitialJoin) {
         store.addEventListener("profilechanged", hubChannel.sendProfileUpdate.bind(hubChannel));
+
+        const scriptURL = data.hubs[0].user_data?.script_url;
+        scriptPromise = scriptURL ? import(/* webpackIgnore: true */ scriptURL) : Promise.resolve();
 
         const requestedOccupants = [];
 
@@ -1474,6 +1479,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       await presenceSync.promise;
+
+      try {
+        await scriptPromise;
+      } catch (err) {
+        console.error(`Custom script for this room failed to load. Reason: ${err}`);
+      }
 
       handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
     })
